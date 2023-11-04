@@ -9,6 +9,8 @@ import Board from "./components/Board/Board";
 function App() {
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
 
+  const [board, setBoard] = useState(Array(60).fill(Array(60).fill(false)));
+
   function closeSettings() {
     setSettingsModalOpen(false);
   }
@@ -22,7 +24,18 @@ function App() {
     console.log(opt);
   }
 
-  const board = Array(60).fill(Array(60).fill(false));
+  function handleCellStateChanged(positionX, positionY) {
+    const newBoard = board.map((column, y) => {
+      if (y === positionY)
+        return column.map((row, x) => {
+          if (x === positionX) return !row;
+          return row;
+        });
+      return column;
+    });
+    setBoard(newBoard);
+  }
+
   return (
     <>
       {settingsModalOpen && (
@@ -37,10 +50,7 @@ function App() {
       <main>
         <section className="game">
           <Controls onSettings={openSettings}></Controls>
-          <Board
-            cells={board}
-            onCellClicked={(x, y) => console.log(x, y)}
-          ></Board>
+          <Board cells={board} onCellClicked={handleCellStateChanged}></Board>
         </section>
       </main>
     </>
