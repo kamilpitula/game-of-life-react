@@ -1,0 +1,27 @@
+.control-button {
+  background-color: lightgray;
+  border: 1px solid darkgray;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.control-button svg {
+  background-color: transparent;
+}
+
+.control-button:disabled svg {
+  stroke: gray;
+}
+
+.control-button:hover,
+.control-button:active {
+  background-color: darkgray;
+}
+
+.control-button:disabled {
+  cursor: not-allowed;
+}
