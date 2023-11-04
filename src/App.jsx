@@ -25,14 +25,19 @@ function App() {
   }
 
   function handleCellStateChanged(positionX, positionY) {
-    const newBoard = board.map((column, y) => {
-      if (y === positionY)
-        return column.map((row, x) => {
-          if (x === positionX) return !row;
-          return row;
+    const newBoard = board.map((row, y) => {
+      if (y === positionY) {
+        return row.map((cellValue, x) => {
+          if (x === positionX) {
+            return !cellValue;
+          }
+          return cellValue;
         });
-      return column;
+      }
+
+      return row.slice();
     });
+    
     setBoard(newBoard);
   }
 

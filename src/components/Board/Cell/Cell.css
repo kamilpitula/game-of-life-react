@@ -16,3 +16,8 @@
 .board__cell--alive {
   background-color: rgba(0, 0, 0, 0.4);
 }
+
+.board__cell--alive:active,
+.board__cell--alive:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
