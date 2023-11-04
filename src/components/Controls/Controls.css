@@ -1,3 +1,6 @@
 .game__controls {
-    padding: 0.5rem 0.8rem;
+  position: absolute;
+  padding: 0 0.4rem;
+  top: 0;
+  left: 0;
 }

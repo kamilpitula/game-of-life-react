@@ -1,0 +1,18 @@
+.board__cell {
+  height: 0.7rem;
+  width: 0.7rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+
+.board__cell:active,
+.board__cell:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.board__cell--alive {
+  background-color: rgba(0, 0, 0, 0.4);
+}

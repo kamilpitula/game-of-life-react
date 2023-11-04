@@ -1,0 +1,10 @@
+.board {
+  align-items: center;
+  overflow: auto;
+  margin: 0 3rem;
+}
+
+.board__row {
+  font-size: 0;
+  white-space: nowrap;
+}
