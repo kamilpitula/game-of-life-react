@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import "./App.css";
 import Header from "./components/Header/Header";
 import Backdrop from "./components/UI/Backdrop/Backdrop";
@@ -11,6 +11,8 @@ function App() {
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
 
   const [board, setBoard] = useState(Game.createNewBoard(60, 60));
+
+  const userClickedCellHandler = useCallback((positionX, positionY) => handleCellStateChanged(positionX, positionY), []);
 
   function closeSettings() {
     setSettingsModalOpen(false);
@@ -27,8 +29,7 @@ function App() {
   }
 
   function handleCellStateChanged(positionX, positionY) {
-    const newBoard = Game.changeCellState(board, positionX, positionY);
-    setBoard(newBoard);
+    setBoard(oldBoard => Game.changeCellState(oldBoard, positionX, positionY));
   }
 
   return (
@@ -45,7 +46,7 @@ function App() {
       <main>
         <section className="game">
           <Controls onSettings={openSettings}></Controls>
-          <Board cells={board} onCellClicked={handleCellStateChanged}></Board>
+          <Board cells={board} onCellClicked={userClickedCellHandler}></Board>
         </section>
       </main>
     </>

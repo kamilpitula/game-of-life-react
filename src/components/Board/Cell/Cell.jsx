@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
 import "./Cell.css";
+import { memo } from "react";
 
-export default function Cell(props) {
+const Cell = memo(function Cell(props) {
   const classes = [
     "board__cell",
     props.isAlive ? "board__cell--alive" : "",
@@ -13,7 +14,7 @@ export default function Cell(props) {
       onClick={() => props.onClick(props.positionX, props.positionY)}
     ></button>
   );
-}
+});
 
 Cell.propTypes = {
   isAlive: PropTypes.bool,
@@ -21,3 +22,5 @@ Cell.propTypes = {
   positionY: PropTypes.number,
   onClick: PropTypes.func,
 };
+
+export default Cell;
