@@ -30,6 +30,7 @@ function App() {
 
   function stopGame() {
     cancelAnimationFrame(interval);
+    setInterval(null);
   }
 
   function closeSettings() {
@@ -52,6 +53,8 @@ function App() {
     );
   }
 
+  const isRunning = interval ? true : false;
+
   return (
     <>
       {settingsModalOpen && (
@@ -69,6 +72,7 @@ function App() {
             onSettings={openSettings}
             onRun={startGame}
             onStop={stopGame}
+            isRunning={isRunning}
           ></Controls>
           <Board cells={board} onCellClicked={userClickedCellHandler}></Board>
         </section>
