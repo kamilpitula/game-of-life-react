@@ -9,10 +9,28 @@ import Game from "./game/game";
 
 function App() {
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
-
   const [board, setBoard] = useState(Game.createNewBoard(60, 60));
+  const [interval, setInterval] = useState(null);
 
-  const userClickedCellHandler = useCallback((positionX, positionY) => handleCellStateChanged(positionX, positionY), []);
+  const userClickedCellHandler = useCallback(
+    (positionX, positionY) => handleCellStateChanged(positionX, positionY),
+    []
+  );
+
+  function tickHandler() {
+    const interval = requestAnimationFrame(tickHandler);
+    setInterval(interval);
+    //TODO: game update
+    console.log(performance.now(), interval);
+  }
+
+  function startGame() {
+    requestAnimationFrame(tickHandler);
+  }
+
+  function stopGame() {
+    cancelAnimationFrame(interval);
+  }
 
   function closeSettings() {
     setSettingsModalOpen(false);
@@ -29,7 +47,9 @@ function App() {
   }
 
   function handleCellStateChanged(positionX, positionY) {
-    setBoard(oldBoard => Game.changeCellState(oldBoard, positionX, positionY));
+    setBoard((oldBoard) =>
+      Game.changeCellState(oldBoard, positionX, positionY)
+    );
   }
 
   return (
@@ -45,7 +65,11 @@ function App() {
       <Header />
       <main>
         <section className="game">
-          <Controls onSettings={openSettings}></Controls>
+          <Controls
+            onSettings={openSettings}
+            onRun={startGame}
+            onStop={stopGame}
+          ></Controls>
           <Board cells={board} onCellClicked={userClickedCellHandler}></Board>
         </section>
       </main>
