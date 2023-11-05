@@ -5,11 +5,12 @@ import Backdrop from "./components/UI/Backdrop/Backdrop";
 import Settings from "./components/Settings/Settings";
 import Controls from "./components/Controls/Controls";
 import Board from "./components/Board/Board";
+import Game from "./game/game";
 
 function App() {
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
 
-  const [board, setBoard] = useState(Array(60).fill(Array(60).fill(false)));
+  const [board, setBoard] = useState(Game.createNewBoard(60, 60));
 
   function closeSettings() {
     setSettingsModalOpen(false);
@@ -21,23 +22,12 @@ function App() {
 
   function applySettingsHandler(opt) {
     setSettingsModalOpen(false);
+    setBoard(Game.createNewBoard(opt.width, opt.height));
     console.log(opt);
   }
 
   function handleCellStateChanged(positionX, positionY) {
-    const newBoard = board.map((row, y) => {
-      if (y === positionY) {
-        return row.map((cellValue, x) => {
-          if (x === positionX) {
-            return !cellValue;
-          }
-          return cellValue;
-        });
-      }
-
-      return row.slice();
-    });
-    
+    const newBoard = Game.changeCellState(board, positionX, positionY);
     setBoard(newBoard);
   }
 
@@ -47,7 +37,7 @@ function App() {
         <Backdrop onClick={closeSettings}>
           <Settings
             onCancel={closeSettings}
-            onApply={(opts) => applySettingsHandler(opts)}
+            onApply={applySettingsHandler}
           ></Settings>
         </Backdrop>
       )}
