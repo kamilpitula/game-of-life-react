@@ -6,6 +6,7 @@ import Settings from "./components/Settings/Settings";
 import Controls from "./components/Controls/Controls";
 import Board from "./components/Board/Board";
 import Game from "./game/game";
+import game from "./game/game";
 
 function App() {
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
@@ -47,6 +48,11 @@ function App() {
     console.log(opt);
   }
 
+  function resetGame() {
+    stopGame();
+    setBoard(game.createNewBoard(60, 60));
+  }
+
   function handleCellStateChanged(positionX, positionY) {
     setBoard((oldBoard) =>
       Game.changeCellState(oldBoard, positionX, positionY)
@@ -72,6 +78,7 @@ function App() {
             onSettings={openSettings}
             onRun={startGame}
             onStop={stopGame}
+            onRestart={resetGame}
             isRunning={isRunning}
           ></Controls>
           <Board cells={board} onCellClicked={userClickedCellHandler}></Board>

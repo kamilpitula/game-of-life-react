@@ -33,7 +33,7 @@ export default function Controls(props) {
           />
         </svg>
       </Button>
-      <Button style={buttonStyle} disabled={false}>
+      <Button style={buttonStyle} onClick={props.onRestart} disabled={false}>
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g clipPath="url(#clip0_1276_7761)">
             <path
@@ -125,5 +125,6 @@ Controls.propTypes = {
   onSettings: PropTypes.func,
   onRun: PropTypes.func,
   onStop: PropTypes.func,
+  onRestart: PropTypes.func,
   isRunning: PropTypes.bool,
 };

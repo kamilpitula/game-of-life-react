@@ -25,3 +25,7 @@
 .control-button:disabled {
   cursor: not-allowed;
 }
+
+.control-button:disabled svg * {
+  stroke: darkgray;
+}
