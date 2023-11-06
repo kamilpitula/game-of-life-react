@@ -48,6 +48,7 @@ function App() {
 
   function applySettingsHandler(opt) {
     setSettingsModalOpen(false);
+    setRunning(false);
     setBoard(Game.createNewBoard(opt.width, opt.height));
     console.log(opt);
   }

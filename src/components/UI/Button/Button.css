@@ -1,6 +1,6 @@
 .control-button {
   background-color: lightgray;
-  border: 1px solid darkgray;
+  border: none;
   border-radius: 50%;
   width: 2rem;
   height: 2rem;
@@ -27,5 +27,5 @@
 }
 
 .control-button:disabled svg * {
-  stroke: darkgray;
+  stroke: gray;
 }
