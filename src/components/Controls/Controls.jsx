@@ -51,7 +51,11 @@ export default function Controls(props) {
           </defs>
         </svg>
       </Button>
-      <Button style={buttonStyle} disabled={props.isRunning}>
+      <Button
+        style={buttonStyle}
+        onClick={props.onExport}
+        disabled={props.isRunning}
+      >
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M2 12.0002C2 7.28611 2 4.92909 3.46447 3.46462C4.70529 2.2238 6.58687 2.03431 10 2.00537M22 12.0002C22 7.28611 22 4.92909 20.5355 3.46462C19.2947 2.2238 17.4131 2.03431 14 2.00537"
@@ -125,6 +129,7 @@ Controls.propTypes = {
   onSettings: PropTypes.func,
   onRun: PropTypes.func,
   onStop: PropTypes.func,
+  onExport: PropTypes.func,
   onRestart: PropTypes.func,
   isRunning: PropTypes.bool,
 };

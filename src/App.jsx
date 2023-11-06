@@ -6,7 +6,8 @@ import Settings from "./components/Settings/Settings";
 import Controls from "./components/Controls/Controls";
 import Board from "./components/Board/Board";
 import Game from "./game/game";
-import game from "./game/game";
+import { exportToLife106 } from "./export/exportLife106";
+import { downloadFile } from "./utils/fileDownload";
 
 function App() {
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
@@ -55,7 +56,12 @@ function App() {
 
   function resetGame() {
     stopGame();
-    setBoard(game.createNewBoard(60, 60));
+    setBoard(Game.createNewBoard(60, 60));
+  }
+
+  function exportBoard() {
+    const exportedBoard = exportToLife106(board);
+    downloadFile(exportedBoard, "pattern.life");
   }
 
   function handleCellStateChanged(positionX, positionY) {
@@ -82,6 +88,7 @@ function App() {
             onRun={startGame}
             onStop={stopGame}
             onRestart={resetGame}
+            onExport={exportBoard}
             isRunning={isRunning}
           ></Controls>
           <Board cells={board} onCellClicked={userClickedCellHandler}></Board>
