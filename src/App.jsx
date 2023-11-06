@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/Header/Header";
 import Backdrop from "./components/UI/Backdrop/Backdrop";
@@ -11,27 +11,31 @@ import game from "./game/game";
 function App() {
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
   const [board, setBoard] = useState(Game.createNewBoard(60, 60));
-  const [interval, setInterval] = useState(null);
+  const [isRunning, setRunning] = useState(false);
+
+  useEffect(() => {
+    let frameId;
+    const tick = () => {
+      if (!isRunning) return;
+      const newBoard = Game.tick(board);
+      setBoard(newBoard);
+      frameId = requestAnimationFrame(tick);
+    };
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
+  }, [board, isRunning]);
 
   const userClickedCellHandler = useCallback(
     (positionX, positionY) => handleCellStateChanged(positionX, positionY),
     []
   );
 
-  function tickHandler() {
-    const interval = requestAnimationFrame(tickHandler);
-    setInterval(interval);
-    //TODO: game update
-    console.log(performance.now(), interval);
-  }
-
   function startGame() {
-    requestAnimationFrame(tickHandler);
+    setRunning(true);
   }
 
   function stopGame() {
-    cancelAnimationFrame(interval);
-    setInterval(null);
+    setRunning(false);
   }
 
   function closeSettings() {
@@ -58,8 +62,6 @@ function App() {
       Game.changeCellState(oldBoard, positionX, positionY)
     );
   }
-
-  const isRunning = interval ? true : false;
 
   return (
     <>
