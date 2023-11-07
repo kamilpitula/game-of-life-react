@@ -1,15 +1,18 @@
 function createNewBoard(sizeX, sizeY) {
-  return Array(sizeY).fill(Array(sizeX).fill(false));
+  return Array(sizeY).fill(
+    Array(sizeX).fill({ isAlive: false, visitedBefore: false })
+  );
 }
 
 function changeCellState(board, positionX, positionY) {
   const newBoard = board.map((row, y) => {
     if (y === positionY) {
-      return row.map((cellValue, x) => {
+      return row.map((cell, x) => {
         if (x === positionX) {
-          return !cellValue;
+          const visitedBefore = cell.isAlive || cell.visitedBefore;
+          return { visitedBefore: visitedBefore, isAlive: !cell.isAlive };
         }
-        return cellValue;
+        return { ...cell };
       });
     }
 
@@ -24,11 +27,16 @@ function tick(board) {
 
   for (let positionY = 0; positionY < board.length; positionY++) {
     for (let positionX = 0; positionX < board[positionY].length; positionX++) {
-      const isCellAlive = board[positionY][positionX];
+      const isCellAlive = board[positionY][positionX].isAlive;
       const aliveCells = checkAdjacentCells(board, positionX, positionY);
       const [stateChanged, newState] = getCellNewState(aliveCells, isCellAlive);
       if (stateChanged) {
-        newBoard[positionY][positionX] = newState;
+        const oldCell = board[positionY][positionX];
+        const visitedBefore = oldCell.isAlive || oldCell.visitedBefore;
+        newBoard[positionY][positionX] = {
+          visitedBefore: visitedBefore,
+          isAlive: newState,
+        };
       }
     }
   }
@@ -66,7 +74,7 @@ function checkAdjacentCells(board, positionX, positionY) {
       if (row === positionY && column === positionX) continue;
       if (row < 0 || column < 0) continue;
 
-      const currentNeighbour = board[row][column];
+      const currentNeighbour = board[row][column].isAlive;
       if (currentNeighbour) {
         aliveNeighboursCount++;
       }

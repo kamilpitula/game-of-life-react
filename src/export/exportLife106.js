@@ -6,7 +6,7 @@ function exportToLife106(board) {
 
   for (let positionY = 0; positionY < board.length; positionY++)
     for (let positionX = 0; positionX < board[positionY].length; positionX++) {
-      if (!board[positionY][positionX]) continue;
+      if (!board[positionY][positionX].isAlive) continue;
       const line = `${positionX} ${positionY}\n`;
       result += line;
     }

@@ -4,11 +4,12 @@ import Cell from "./Cell/Cell";
 
 export default function Board(props) {
   const boardElements = props.cells.map((column, y) => {
-    const row = column.map((isAlive, x) => {
+    const row = column.map((cell, x) => {
       return (
         <Cell
           key={`${x}__${y}`}
-          isAlive={isAlive}
+          isAlive={cell.isAlive}
+          visitedBefore={cell.visitedBefore}
           positionX={x}
           positionY={y}
           onClick={props.onCellClicked}
