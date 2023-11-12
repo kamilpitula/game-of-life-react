@@ -1,12 +1,12 @@
-import Controls from "../Controls/Controls";
-import Board from "../Board/Board";
-import Backdrop from "../UI/Backdrop/Backdrop";
-import Settings from "../Settings/Settings";
+import Controls from "../../Controls/Controls";
+import Board from "../../Board/Board";
+import Backdrop from "../../UI/Backdrop/Backdrop";
+import Settings from "../../Settings/Settings";
 import { useState, useCallback, useEffect } from "react";
-import Game from "../../game/game";
-import { downloadFile } from "../../utils/fileDownload";
-import { exportToLife106 } from "../../export/exportLife106";
-import { saveBoard } from "../../share/shareVercel";
+import Game from "../../../game/game";
+import { downloadFile } from "../../../utils/fileDownload";
+import { exportToLife106 } from "../../../export/exportLife106";
+import { saveBoard } from "../../../share/shareVercel";
 import "./GamePage.css";
 
 export default function GamePage() {
