@@ -78,43 +78,24 @@ export default function Controls(props) {
           />
         </svg>
       </Button>
-      <Button onClick={props.onShare} style={buttonStyle}>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-          <circle cx="8" cy="10" r="2" stroke="#1C274C" strokeWidth="1.5" />
-          <circle
-            cx="2"
-            cy="2"
-            r="2"
-            transform="matrix(1 0 0 -1 14 16)"
-            stroke="#1C274C"
-            strokeWidth="1.5"
-          />
+      <Button
+        onClick={props.onShare}
+        style={buttonStyle}
+        disabled={props.isRunning}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
           <path
-            d="M8 14V19"
-            stroke="#1C274C"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-          <path
-            d="M16 10V5"
+            d="M15.197 3.35462C16.8703 1.67483 19.4476 1.53865 20.9536 3.05046C22.4596 4.56228 22.3239 7.14956 20.6506 8.82935L18.2268 11.2626M10.0464 14C8.54044 12.4882 8.67609 9.90087 10.3494 8.22108L12.5 6.06212"
             stroke="#1C274C"
             strokeWidth="1.5"
             strokeLinecap="round"
           />
           <path
-            d="M8 5V6"
-            stroke="#1C274C"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-          <path
-            d="M16 19V18"
-            stroke="#1C274C"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-          <path
-            d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8"
+            d="M13.9536 10C15.4596 11.5118 15.3239 14.0991 13.6506 15.7789L11.2268 18.2121L8.80299 20.6454C7.12969 22.3252 4.55237 22.4613 3.0464 20.9495C1.54043 19.4377 1.67609 16.8504 3.34939 15.1706L5.77323 12.7373"
             stroke="#1C274C"
             strokeWidth="1.5"
             strokeLinecap="round"
