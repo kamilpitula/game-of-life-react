@@ -7,12 +7,14 @@ import Game from "../../../game/game";
 import { downloadFile } from "../../../utils/fileDownload";
 import { exportToLife106 } from "../../../export/exportLife106";
 import { saveBoard } from "../../../share/shareVercel";
+import { useNavigate } from "react-router-dom";
 import "./GamePage.css";
 
 export default function GamePage() {
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
   const [board, setBoard] = useState(Game.createNewBoard(60, 60));
   const [isRunning, setRunning] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let frameId;
@@ -67,8 +69,7 @@ export default function GamePage() {
   async function shareBoard() {
     try {
       const res = await saveBoard(board);
-      //TODO: redirect to page with the code
-      console.log("Success!", res);
+      navigate(`../share?boardId=${res}`);
     } catch (ex) {
       //TODO: redirect to error page
       console.log("Failed!");
