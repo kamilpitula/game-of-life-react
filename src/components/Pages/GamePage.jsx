@@ -6,7 +6,8 @@ import { useState, useCallback, useEffect } from "react";
 import Game from "../../game/game";
 import { downloadFile } from "../../utils/fileDownload";
 import { exportToLife106 } from "../../export/exportLife106";
-import './GamePage.css';
+import { saveBoard } from "../../share/shareVercel";
+import "./GamePage.css";
 
 export default function GamePage() {
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
@@ -63,6 +64,18 @@ export default function GamePage() {
     downloadFile(exportedBoard, "pattern.life");
   }
 
+  async function shareBoard() {
+    try {
+      const res = await saveBoard(board);
+      //TODO: redirect to page with the code
+      console.log("Success!", res);
+    } catch (ex) {
+      //TODO: redirect to error page
+      console.log("Failed!");
+      console.log(ex);
+    }
+  }
+
   function handleCellStateChanged(positionX, positionY) {
     setBoard((oldBoard) =>
       Game.changeCellState(oldBoard, positionX, positionY)
@@ -84,6 +97,7 @@ export default function GamePage() {
         onStop={stopGame}
         onRestart={resetGame}
         onExport={exportBoard}
+        onShare={shareBoard}
         isRunning={isRunning}
       ></Controls>
       <Board cells={board} onCellClicked={userClickedCellHandler}></Board>
