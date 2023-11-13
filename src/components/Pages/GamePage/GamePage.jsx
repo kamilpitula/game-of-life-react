@@ -6,7 +6,7 @@ import { useState, useCallback, useEffect } from "react";
 import Game from "../../../game/game";
 import { downloadFile } from "../../../utils/fileDownload";
 import { exportToLife106 } from "../../../export/exportLife106";
-import { saveBoard } from "../../../share/shareVercel";
+// import { saveBoard } from "../../../../api/share/shareVercel";
 import { useNavigate } from "react-router-dom";
 import "./GamePage.css";
 
@@ -68,8 +68,13 @@ export default function GamePage() {
 
   async function shareBoard() {
     try {
-      const res = await saveBoard(board);
-      navigate(`../share?boardId=${res}`);
+      const res = await fetch("/api/share",{
+        method: "POST",
+        body: JSON.stringify(board),
+        
+      })
+      const response = await res.json();
+      navigate(`../share?boardId=${response.key}`);
     } catch (ex) {
       //TODO: redirect to error page
       console.log("Failed!");
