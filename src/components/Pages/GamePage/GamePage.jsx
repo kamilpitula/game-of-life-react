@@ -6,7 +6,6 @@ import { useState, useCallback, useEffect } from "react";
 import Game from "../../../game/game";
 import { downloadFile } from "../../../utils/fileDownload";
 import { exportToLife106 } from "../../../export/exportLife106";
-// import { saveBoard } from "../../../../api/share/shareVercel";
 import { useNavigate } from "react-router-dom";
 import "./GamePage.css";
 
