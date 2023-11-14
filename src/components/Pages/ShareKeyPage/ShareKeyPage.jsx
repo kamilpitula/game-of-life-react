@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router-dom";
+import "./ShareKeyPage.css";
 
 export default function ShareKeyPage() {
   const [searchParams] = useSearchParams();
@@ -8,10 +9,17 @@ export default function ShareKeyPage() {
 
   const url = `${origin}/${boardId}`;
 
+  function clickHandler() {
+    navigator.clipboard.writeText(url);
+  }
+
   return (
-    <section>
-      {/* TODO: create copy to clipboard component */}
-      <h2>{`Here's your key: ${url}`}</h2>
+    <section className="share">
+      <h1>{"Here's your key!"}</h1>
+      <div className="copyToClipboard">
+        <p className="copyToClipboard__value">{boardId}</p>
+        <button onClick={clickHandler} className="copyToClipboard__button">Copy</button>
+      </div>
     </section>
   );
 }
