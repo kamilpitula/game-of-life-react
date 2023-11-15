@@ -1,5 +1,7 @@
 import { kv } from "@vercel/kv";
 import { exportToLife106 } from "../export/exportLife106.js";
+import { importLife106 } from "../import/importLife106.js";
+
 import crypto from 'node:crypto';
 
 const keyPrefix = "sharedBoard";
@@ -12,4 +14,10 @@ export async function saveBoard(board) {
     ex: expireAfterSeconds,
   });
   return uuid;
+}
+
+export async function fetchBoard(uuid) {
+  const boardString = await kv.get(`${keyPrefix}:${uuid}`);
+  const board = importLife106(boardString);
+  return board;
 }

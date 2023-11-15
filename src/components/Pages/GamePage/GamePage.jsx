@@ -6,13 +6,14 @@ import { useState, useCallback, useEffect } from "react";
 import Game from "../../../game/game";
 import { downloadFile } from "../../../utils/fileDownload";
 import { exportToLife106 } from "../../../export/exportLife106";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./GamePage.css";
 
 export default function GamePage() {
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
   const [board, setBoard] = useState(Game.createNewBoard(60, 60));
   const [isRunning, setRunning] = useState(false);
+  const { boardId } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,6 +32,28 @@ export default function GamePage() {
     (positionX, positionY) => handleCellStateChanged(positionX, positionY),
     []
   );
+
+  useEffect(() => {
+    let canceled = false;
+
+    if (canceled) return;
+
+    async function fetchBoard(){
+      const response = await fetch(
+        "api/fetch?" +
+          new URLSearchParams({
+            boardId: boardId,
+          })
+      );
+
+      const result = await response.json();
+      setBoard(result.board);
+    }
+
+    fetchBoard();
+
+    return () => (canceled = true);
+  }, [boardId]);
 
   function startGame() {
     setRunning(true);
@@ -67,11 +90,10 @@ export default function GamePage() {
 
   async function shareBoard() {
     try {
-      const res = await fetch("/api/share",{
+      const res = await fetch("/api/share", {
         method: "POST",
         body: JSON.stringify(board),
-        
-      })
+      });
       const response = await res.json();
       navigate(`../share?boardId=${response.key}`);
     } catch (ex) {
