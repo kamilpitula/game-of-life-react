@@ -7,14 +7,25 @@ export default function CopyToClipboard({ displayValue, content }) {
 
   function clickHandler() {
     navigator.clipboard.writeText(content);
-    setCopied(true)
+    setCopied(true);
   }
+
+  const classes = [
+    "copyToClipboard__button",
+    copied ? "copyToClipboard__button--copied" : "",
+  ].join(" ");
 
   return (
     <div className="copyToClipboard">
       <p className="copyToClipboard__value">{displayValue}</p>
-      <button onClick={clickHandler} className="copyToClipboard__button">
-        Copy {copied && "✅"}
+      <button onClick={clickHandler} className={classes}>
+        {copied ? (
+          <p>
+            Copied <span className="copyToClipboard__emoji">✅</span>
+          </p>
+        ) : (
+          <p>Copy</p>
+        )}
       </button>
     </div>
   );
