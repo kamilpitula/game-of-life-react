@@ -1,0 +1,11 @@
+.share {
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  box-shadow: 0.3rem 0.3rem 1rem rgba(0, 0, 0, 0.2);
+  background-color: rgba(179, 221, 234, 0.3);
+  width: 60%;
+  margin: 3rem auto;
+  padding: 3rem;
+}
+
+

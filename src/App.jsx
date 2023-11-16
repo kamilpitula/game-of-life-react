@@ -1,13 +1,13 @@
 import "./App.css";
 import Header from "./components/Header/Header";
-import GamePage from "./components/Pages/GamePage";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
     <>
       <Header />
       <main>
-        <GamePage></GamePage>
+        <Outlet />
       </main>
     </>
   );

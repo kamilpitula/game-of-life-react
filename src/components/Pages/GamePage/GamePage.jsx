@@ -1,17 +1,20 @@
-import Controls from "../Controls/Controls";
-import Board from "../Board/Board";
-import Backdrop from "../UI/Backdrop/Backdrop";
-import Settings from "../Settings/Settings";
+import Controls from "../../Controls/Controls";
+import Board from "../../Board/Board";
+import Backdrop from "../../UI/Backdrop/Backdrop";
+import Settings from "../../Settings/Settings";
 import { useState, useCallback, useEffect } from "react";
-import Game from "../../game/game";
-import { downloadFile } from "../../utils/fileDownload";
-import { exportToLife106 } from "../../export/exportLife106";
-import './GamePage.css';
+import Game from "../../../game/game";
+import { downloadFile } from "../../../utils/fileDownload";
+import { exportToLife106 } from "../../../export/exportLife106";
+import { useNavigate, useParams } from "react-router-dom";
+import "./GamePage.css";
 
 export default function GamePage() {
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
   const [board, setBoard] = useState(Game.createNewBoard(60, 60));
   const [isRunning, setRunning] = useState(false);
+  const { boardId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let frameId;
@@ -19,7 +22,6 @@ export default function GamePage() {
       if (!isRunning) return;
       const newBoard = Game.tick(board);
       setBoard(newBoard);
-      frameId = requestAnimationFrame(tick);
     };
     frameId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frameId);
@@ -29,6 +31,29 @@ export default function GamePage() {
     (positionX, positionY) => handleCellStateChanged(positionX, positionY),
     []
   );
+
+  useEffect(() => {
+    let canceled = false;
+
+    if (!boardId) return;
+    if (canceled) return;
+
+    async function fetchBoard() {
+      const response = await fetch(
+        "api/fetch?" +
+          new URLSearchParams({
+            boardId: boardId,
+          })
+      );
+
+      const result = await response.json();
+      setBoard(result.board);
+    }
+
+    fetchBoard();
+
+    return () => (canceled = true);
+  }, [boardId]);
 
   function startGame() {
     setRunning(true);
@@ -63,6 +88,21 @@ export default function GamePage() {
     downloadFile(exportedBoard, "pattern.life");
   }
 
+  async function shareBoard() {
+    try {
+      const res = await fetch("/api/share", {
+        method: "POST",
+        body: JSON.stringify(board),
+      });
+      const response = await res.json();
+      navigate(`../share?boardId=${response.key}`);
+    } catch (ex) {
+      //TODO: redirect to error page
+      console.log("Failed!");
+      console.log(ex);
+    }
+  }
+
   function handleCellStateChanged(positionX, positionY) {
     setBoard((oldBoard) =>
       Game.changeCellState(oldBoard, positionX, positionY)
@@ -84,6 +124,7 @@ export default function GamePage() {
         onStop={stopGame}
         onRestart={resetGame}
         onExport={exportBoard}
+        onShare={shareBoard}
         isRunning={isRunning}
       ></Controls>
       <Board cells={board} onCellClicked={userClickedCellHandler}></Board>
