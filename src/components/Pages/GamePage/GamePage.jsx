@@ -19,7 +19,6 @@ export default function GamePage() {
   useEffect(() => {
     let frameId;
     const tick = () => {
-      console.log("tick");
       if (!isRunning) return;
       const newBoard = Game.tick(board);
       setBoard(newBoard);
