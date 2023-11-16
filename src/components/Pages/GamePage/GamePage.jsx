@@ -19,10 +19,10 @@ export default function GamePage() {
   useEffect(() => {
     let frameId;
     const tick = () => {
+      console.log("tick");
       if (!isRunning) return;
       const newBoard = Game.tick(board);
       setBoard(newBoard);
-      frameId = requestAnimationFrame(tick);
     };
     frameId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frameId);
@@ -36,9 +36,10 @@ export default function GamePage() {
   useEffect(() => {
     let canceled = false;
 
+    if (!boardId) return;
     if (canceled) return;
 
-    async function fetchBoard(){
+    async function fetchBoard() {
       const response = await fetch(
         "api/fetch?" +
           new URLSearchParams({
