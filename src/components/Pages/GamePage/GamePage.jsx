@@ -8,28 +8,26 @@ import { downloadFile } from "../../../utils/fileDownload";
 import { exportToLife106 } from "../../../export/exportLife106";
 import { useNavigate, useParams } from "react-router-dom";
 import "./GamePage.css";
+import useAnimation from "../../../composables/useAnimation";
 
 export default function GamePage() {
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
-  const [board, setBoard] = useState(Game.createNewBoard(60, 60));
-  const [isRunning, setRunning] = useState(false);
   const { boardId } = useParams();
+  const [isRunning, setRunning] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    let frameId;
-    const tick = () => {
-      if (!isRunning) return;
-      setBoard((oldBoard) => Game.tick(oldBoard));
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
-  }, [isRunning]);
+  const [board, setBoard] = useAnimation(
+    Game.createNewBoard(60, 60),
+    Game.tick,
+    isRunning
+  );
 
   const userClickedCellHandler = useCallback(
-    (positionX, positionY) => handleCellStateChanged(positionX, positionY),
-    []
+    (positionX, positionY) =>
+      setBoard((oldBoard) =>
+        Game.changeCellState(oldBoard, positionX, positionY)
+      ),
+    [setBoard]
   );
 
   useEffect(() => {
@@ -53,7 +51,7 @@ export default function GamePage() {
     fetchBoard();
 
     return () => (canceled = true);
-  }, [boardId]);
+  }, [boardId, setBoard]);
 
   function startGame() {
     setRunning(true);
@@ -103,11 +101,6 @@ export default function GamePage() {
     }
   }
 
-  function handleCellStateChanged(positionX, positionY) {
-    setBoard((oldBoard) =>
-      Game.changeCellState(oldBoard, positionX, positionY)
-    );
-  }
   return (
     <section className="game">
       {settingsModalOpen && (
