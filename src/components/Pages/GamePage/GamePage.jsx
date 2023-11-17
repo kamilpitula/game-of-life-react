@@ -20,12 +20,12 @@ export default function GamePage() {
     let frameId;
     const tick = () => {
       if (!isRunning) return;
-      const newBoard = Game.tick(board);
-      setBoard(newBoard);
+      setBoard((oldBoard) => Game.tick(oldBoard));
+      frameId = requestAnimationFrame(tick);
     };
     frameId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frameId);
-  }, [board, isRunning]);
+  }, [isRunning]);
 
   const userClickedCellHandler = useCallback(
     (positionX, positionY) => handleCellStateChanged(positionX, positionY),
