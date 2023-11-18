@@ -9,6 +9,7 @@ import { exportToLife106 } from "../../../export/exportLife106";
 import { useNavigate, useParams } from "react-router-dom";
 import "./GamePage.css";
 import useAnimation from "../../../composables/useAnimation";
+import { getBoard, postBoard } from "../../../share/functionClient";
 
 export default function GamePage() {
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
@@ -37,15 +38,8 @@ export default function GamePage() {
     if (canceled) return;
 
     async function fetchBoard() {
-      const response = await fetch(
-        "api/fetch?" +
-          new URLSearchParams({
-            boardId: boardId,
-          })
-      );
-
-      const result = await response.json();
-      setBoard(result.board);
+      const board = await getBoard(boardId);
+      setBoard(board);
     }
 
     fetchBoard();
@@ -88,12 +82,8 @@ export default function GamePage() {
 
   async function shareBoard() {
     try {
-      const res = await fetch("/api/share", {
-        method: "POST",
-        body: JSON.stringify(board),
-      });
-      const response = await res.json();
-      navigate(`../share?boardId=${response.key}`);
+      const key = await postBoard(board);
+      navigate(`../share?boardId=${key}`);
     } catch (ex) {
       //TODO: redirect to error page
       console.log("Failed!");
